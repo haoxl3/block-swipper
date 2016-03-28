@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{margin:0;padding:0;}
+        ul{list-style: none;}
+        body{
+            margin:0;
+            padding-top:0;
+            background-color: #7F7F7F;
+        }
+        .cut{
+            width: 560px;
+            height: 300px;
+            margin:100px auto;
+            background-color: pink;
+            position: relative;
+        }
+        .prev,.next{
+            display: block;
+            width: 60px;
+            height: 60px;
+            background-color:rgba(0,0,0,.5);
+            position: absolute;
+            top:50%;
+            margin-top: -30px;
+            text-decoration: none;
+            color:#fff;
+            text-align: center;
+            line-height: 60px;
+            font-size: 40px;
+        }
+        .next{
+            right:0;
+        }
+        .cut li{
+            position: absolute;/*li做动画*/
+            width: 112px;/*560/5*/
+            height: 100%;
+            top:0;
+            transform-style: preserve-3d;/*div做显示为3D，要加在父上即li*/
+            transition:transform 1s;/*谁做动画加谁身上*/
+        }
+        .cut li div{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        .cut li div:nth-child(1){
+            background: url(images/1.png) no-repeat;
+            transform: rotateX(0deg) translateZ(150px);
+        }
+        .cut li div:nth-child(2){
+            background: url(images/2.png) no-repeat;
+            transform: rotateX(-90deg) translateZ(150px);
+        }
+        .cut li div:nth-child(3){
+            background: url(images/3.png) no-repeat;
+            transform: rotateX(-180deg) translateZ(150px);
+        }
+        .cut li div:nth-child(4){
+            background: url(images/4.png) no-repeat;
+            transform: rotateX(-270deg) translateZ(150px);
+        }
+    </style>
+    <script src='jquery-1.11.3.min.js'></script>
+    <script>
+        $(function(){
+            /*只让每个li显示560/5这么宽的宽度，li中的div再分别显示该位置处应该显示的图片*/
+           $('li').each(function(index,ele){
+              $(this).css({'left':560/5*index,'transition-delay':index*0.2+'s'});
+               //每个div只显示该位置处的图片，所以图片应向左移动index*img.width距离
+               $(this).find('div').css({backgroundPosition:-560/5*index+'px 0px'});
+           });
+            var num=0;
+            $('.next').on('click',function(){
+                num++;//每个li旋转90度倍数
+               $('li').css('transform','rotateX('+num*90+'deg)') ;
+            });
+            $('.prev').on('click',function(){
+               num--;
+                $('li').css('transform','rotateX('+num*90+'deg)');
+            });
+        });
+    </script>
+</head>
+<body>
+<!--思路：li把图片分割成5部分，每部分延时沿X轴旋转，每个li里的div又是个3D面存放4个图片
+注1个li中的每个div各存放相等图片，且均左对齐显示，所以让每个div里的图片左移索引号*图片宽度的
+长度便可以使每个div显示图片中不同部分了-->
+<div class="cut">
+    <ul>
+        <li>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+        <li>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+    </ul>
+    <a href="javascript:;" class="prev">&lt;</a>
+    <a href="javascript:;" class="next">&gt;</a>
+</div>
+</body>
+</html>
